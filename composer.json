@@ -1,0 +1,10 @@
+{
+  "autoload": {
+    "psr-4": {
+      "Who\\": "src"
+    }
+  },
+  "require": {
+    "squizlabs/php_codesniffer": "^3.6"
+  }
+}
