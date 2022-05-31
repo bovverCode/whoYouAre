@@ -2,8 +2,6 @@
 
 namespace Who\Controller;
 
-use ReflectionClass;
-
 /**
  * Base site controller.
  */
