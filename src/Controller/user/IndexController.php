@@ -2,9 +2,13 @@
 
 namespace Who\Controller\user;
 
-class IndexController {
+use Who\Controller\BaseController;
+
+class IndexController extends BaseController {
 
   public function __construct() {
+
+    echo 'user index';
 
   }
 
