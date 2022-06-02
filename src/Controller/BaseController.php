@@ -5,15 +5,9 @@ namespace Who\Controller;
 /**
  * Base site controller.
  */
-class BaseController {
+abstract class BaseController {
 
   private static $instance;
-
-  protected $routeType = '';
-
-  protected $controller = '';
-
-  protected $options = [];
 
   /**
    * Singleton method construct.
@@ -36,65 +30,34 @@ class BaseController {
   }
 
   /**
-   * Method to set up needle variables in the BaseController Class.
+   * Method to get class option.
    */
-  public function route() {
-
-    if ($_SERVER['REQUEST_METHOD'] === "GET") {
-
-      $path = trim( $_SERVER['REQUEST_URI'], '/');
-      $path = explode('/', $path);
-      array_shift($path);
-
-      if (isset($path[0]) && $path[0] === 'admin') {
-        // admin route
-        $this->routeType = 'admin';
-        array_shift($path);
-
-        if (isset($path[0])) {
-
-          $this->controller = $path[0];
-          array_shift($path);
-
-        } else {
-          $this->controller = 'index';
+  public function get($option) {
+    if (!empty($option)) {
+      if (is_array($option)) {
+        $arr = [];
+        foreach ($option as $opt) {
+          if (isset($this->$opt)) {
+            $arr[$opt] = $this->$opt;
+          }
+          return $arr;
         }
-
       } else {
-        // user route
-        $this->routeType = 'user';
-        if (isset($path[0])) {
-
-          $this->controller = $path[0];
-          array_shift($path);
-
-        } else {
-          //index controller
-          $this->controller = 'index';
-        }
-
-      }
-
-      $i = null;
-      foreach ($path as $item) {
-        $item = strtolower($item);
-        if ($i === null) {
-          $this->options[$item] = '';
-          $i = $item;
-        } else {
-          $this->options[$i] = $item;
-          $i = null;
+        if (isset($this->$option)) {
+          return $this->$option;
         }
       }
-
-      $this->controller = strtolower($this->controller);
-
-      $class = "Who\\Controller\\" . $this->routeType . "\\" . ucfirst($this->controller) . 'Controller';
-
-      $controllerInstance = new $class;
-
     }
+    return false;
+  }
 
+  /**
+   * Method to set class option.
+   */
+  public function set($option, $value) {
+    if (isset($this->$option)) {
+      $this->$option = $value;
+    }
   }
 
 }
