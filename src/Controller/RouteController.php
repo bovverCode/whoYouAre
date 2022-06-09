@@ -27,9 +27,11 @@ class RouteController extends BaseController {
 
     }
 
-    $path = trim( $_SERVER['REQUEST_URI'], '/');
-    $path = explode('/', $path);
-    array_shift($path);
+    $path = $_SERVER['REQUEST_URI'];
+    $path = substr($path, strlen(SITE_PATH));
+    if ($path) {
+        $path = explode('/', $path);
+    } else $path = [];
 
     if (isset($path[0]) && $path[0] === 'admin') {
       // admin route
@@ -71,10 +73,13 @@ class RouteController extends BaseController {
     }
 
     $this->controller = strtolower($this->controller);
-
     $class = "Who\\Controller\\" . $this->routeType . "\\" . ucfirst($this->controller) . 'Controller';
 
-    $controllerInstance = new $class;
+    if (class_exists($class)) {
+        $controllerInstance = new $class;
+    } else {
+        throw new \Exception('Class: ' . $class . ' not exist.');
+    }
 
   }
 

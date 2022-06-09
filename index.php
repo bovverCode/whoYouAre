@@ -1,11 +1,16 @@
 <?php
+/**
+ * File contains entry site point.
+ */
 
 use Who\Controller\RouteController;
+
+require_once "settings.php";
 
 /**
  * Autoloader PSR4
  */
-require_once realpath("vendor/autoload.php");
+require_once "vendor/autoload.php";
 
 try {
   $routeController = RouteController::getInstance();
