@@ -8,14 +8,6 @@ class RouteController extends BaseController {
 
   use Singleton;
 
-  protected $routeType = '';
-
-  protected $controller = '';
-
-  protected $requestMethod = 'GET';
-
-  protected $options = [];
-
   /**
    * Method to set up needle variables in the BaseController Class.
    */
