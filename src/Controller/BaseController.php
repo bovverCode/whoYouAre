@@ -7,14 +7,6 @@ namespace Who\Controller;
  */
 abstract class BaseController {
 
-  protected $routeType = '';
-
-  protected $controller = '';
-
-  protected $requestMethod = 'GET';
-
-  protected $options = [];
-
   /**
    * Method to get class option.
    */
