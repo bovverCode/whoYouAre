@@ -22,4 +22,6 @@ const TEMPLATE_PATH = 'src/View/template/';
 
 const ADMIN_CSS = 'public/css/admin.css';
 const ADMIN_JS = 'public/js/admin.js';
+const USER_CSS = 'public/css/user.css';
+const USER_JS = 'public/js/user.js';
 

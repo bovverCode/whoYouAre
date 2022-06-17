@@ -5,6 +5,7 @@
 
 use Who\Controller\RouteController;
 
+session_start();
 require_once "settings.php";
 
 /**

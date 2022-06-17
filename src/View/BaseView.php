@@ -34,21 +34,20 @@ class BaseView {
         throw new \Exception("File: $path/$template.php not exist.");
       }
     }
-    exit();
   }
 
   /**
    * Create css link.
    */
   public function getLink($src) {
-    return '<link rel="stylesheet" href="' . $src . '">';
+    return '<link rel="stylesheet" href="' . SITE_PATH . $src . '">';
   }
 
   /**
    * Create js link.
    */
   public function getScript($src) {
-    return '<script src="' . $src . '"></script>';
+    return '<script src="' . SITE_PATH . $src . '"></script>';
   }
 
 
