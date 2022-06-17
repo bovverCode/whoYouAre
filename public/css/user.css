@@ -1,0 +1,11 @@
+/* admin css */
+header {
+    padding: 10px;
+    background: blueviolet;
+}
+
+footer {
+    padding: 10px;
+    background: black;
+    color: #fff;
+}

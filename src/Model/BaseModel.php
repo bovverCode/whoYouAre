@@ -6,6 +6,7 @@
 namespace Who\Model;
 
 use PDO;
+use PDOException;
 use Who\Controller\traits\Singleton;
 
 class BaseModel {
@@ -24,7 +25,11 @@ class BaseModel {
   public static function getInstance() {
     if (!isset(self::$instance)) {
       self::$instance = new static();
-      self::$instance->db = $dbh = new PDO('mysql:host=' . HOST_NAME . ';dbname=' . DB_NAME, DB_USER, DB_PASS);
+      try {
+        self::$instance->db = new PDO('mysql:host=' . HOST_NAME . ';dbname=' . DB_NAME, DB_USER, DB_PASS);
+      } catch (PDOException $e) {
+        exit("Error: " . $e->getMessage());
+      }
       return self::$instance;
     }
     return self::$instance;
@@ -34,7 +39,7 @@ class BaseModel {
    * Execute some query
    */
   public function query($query) {
-    return $this->db->query($query);
+    return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
   }
 
   /**
@@ -78,7 +83,7 @@ class BaseModel {
 
     # Getting sort stuff.
     $sort = '';
-    if ($options['sort'] && is_array($options['sort'])) {
+    if (isset($options['sort']) && is_array($options['sort'])) {
       $sort = 'ORDER BY ' ;
       foreach ($options['sort'] as $field => $rule) {
         $sort .= "$field $rule,";

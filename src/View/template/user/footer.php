@@ -10,6 +10,6 @@
     </div>
 </footer>
 </div>
-<?= $this->getScript(ADMIN_JS); ?>
+<?= $this->getScript(USER_JS); ?>
 </body>
 </html>
