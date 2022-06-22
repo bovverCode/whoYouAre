@@ -25,10 +25,11 @@ class BaseModel {
   public static function getInstance() {
     if (!isset(self::$instance)) {
       self::$instance = new static();
+      // Try to create connection with db.
       try {
         self::$instance->db = new PDO('mysql:host=' . HOST_NAME . ';dbname=' . DB_NAME, DB_USER, DB_PASS);
       } catch (PDOException $e) {
-        exit("Error: " . $e->getMessage());
+        exit("DB Error: " . $e->getMessage());
       }
       return self::$instance;
     }
@@ -38,8 +39,14 @@ class BaseModel {
   /**
    * Execute some query
    */
-  public function query($query) {
-    return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+  public function query($query, $values = []) {
+    try {
+      $stmt = $this->db->prepare($query);
+      $stmt->execute($values);
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      exit("DB Error: " . $e->getMessage());
+    }
   }
 
   /**
@@ -53,6 +60,7 @@ class BaseModel {
    */
   public function read($table, $options = []) {
     $query = "SELECT";
+    $prepareValues = [];
 
     # Getting fields for our query.
     $fields = '';
@@ -72,11 +80,8 @@ class BaseModel {
     if ($options['where'] && is_array($options['where'])) {
       $where = 'WHERE';
       foreach ($options['where'] as $field => $value) {
-        if (is_string($value[1])) {
-          $where .= " $table.$field{$value[0]}'{$value[1]}' AND";
-        } else {
-          $where .= " $table.$field{$value[0]}{$value[1]} AND";
-        }
+        $where .= " $table.$field{$value[0]}? AND";
+        $prepareValues[] = $value[1];
       }
       $where = rtrim($where, 'AND');
     }
@@ -92,7 +97,7 @@ class BaseModel {
     }
 
     $query .= " $fields FROM $table $where $sort";
-    return $this->query($query);
+    return $this->query($query, $prepareValues);
   }
 
   /**
@@ -102,6 +107,7 @@ class BaseModel {
    */
   public function create($table, $fields, $values) {
     $query = 'INSERT INTO ' . DB_NAME . '.' . $table;
+    $prepareValues = [];
 
     # Getting field names.
     $names = '';
@@ -118,17 +124,14 @@ class BaseModel {
     if ($values && is_array($values)) {
       $cols = 'VALUES (';
       foreach ($values as $value) {
-        if (is_string($value)) {
-          $cols .= "'$value',";
-        } else {
-          $cols .= "$value,";
-        }
+        $cols .= "?,";
+        $prepareValues[] = $value;
       }
       $cols = rtrim($cols, ',') . ')';
     }
 
     $query .= " $names $cols";
-    return $this->query($query);
+    return $this->query($query, $prepareValues);
   }
 
   /**
@@ -145,17 +148,15 @@ class BaseModel {
    */
   public function update($table, $options) {
     $query = "UPDATE $table";
+    $prepareValues = [];
 
     # Getting values to set.
     $set = '';
     if ($options['fields'] && is_array($options['fields'])) {
       $set = 'SET ';
       foreach ($options['fields'] as $name => $value) {
-        if (is_string($value)) {
-          $set .= "$table.$name='$value',";
-        } else {
-          $set .= "$table.$name=$value,";
-        }
+        $set .= "$table.$name=?,";
+        $prepareValues[] = $value;
       }
       $set = rtrim($set, ',');
     }
@@ -165,17 +166,14 @@ class BaseModel {
     if ($options['where'] && is_array($options['where'])) {
       $where = 'WHERE';
       foreach ($options['where'] as $field => $value) {
-        if (is_string($value[1])) {
-          $where .= " $table.$field{$value[0]}'{$value[1]}' AND";
-        } else {
-          $where .= " $table.$field{$value[0]}{$value[1]} AND";
-        }
+        $where .= " $table.$field{$value[0]}? AND";
+        $prepareValues[] = $value[1];
       }
       $where = rtrim($where, 'AND');
     }
 
     $query .= " $set $where";
-    return $this->query($query);
+    return $this->query($query, $prepareValues);
   }
 
   /**
@@ -187,23 +185,21 @@ class BaseModel {
    */
   public function delete($table, $options) {
     $query = "DELETE FROM $table";
+    $prepareValues = [];
 
     # Getting where conditions.
     $where = '';
     if ($options['where'] && is_array($options['where'])) {
       $where = 'WHERE';
       foreach ($options['where'] as $field => $value) {
-        if (is_string($value[1])) {
-          $where .= " $table.$field{$value[0]}'{$value[1]}' AND";
-        } else {
-          $where .= " $table.$field{$value[0]}{$value[1]} AND";
-        }
+        $where .= " $table.$field{$value[0]}? AND";
+        $prepareValues[] = $value[1];
       }
       $where = rtrim($where, 'AND');
     }
 
     $query .= " $where";
-    return $this->query($query);
+    return $this->query($query, $prepareValues);
   }
 
 }
