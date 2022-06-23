@@ -21,14 +21,22 @@ class RouteController extends BaseController {
    */
   public function route() {
 
-    if ($_SERVER['REQUEST_METHOD'] === "POST") {
-
-      $this->requestMethod = 'POST';
-
-    }
-
+    // Actual path.
     $path = $_SERVER['REQUEST_URI'];
     $path = substr($path, strlen(SITE_PATH));
+
+    // Check if path ends with '/'.
+    if (substr($path, strlen($path) - 1, 1) === '/') {
+      $path = substr($path, 0, strlen($path) -1);
+      // Redirect to path without '/' at the end.
+      header('Location: /' . $path);
+      die();
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === "POST") {
+      $this->requestMethod = 'POST';
+    }
+
     if ($path) {
         $path = explode('/', $path);
     } else $path = [];
