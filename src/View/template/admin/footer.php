@@ -6,7 +6,7 @@
 </main>
 <footer class="footer">
     <div class="container">
-        FOOTER
+        WHO U ARE?
     </div>
 </footer>
 </div>

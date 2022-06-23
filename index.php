@@ -7,6 +7,7 @@ use Who\Controller\RouteController;
 
 session_start();
 require_once "settings.php";
+date_default_timezone_set('Europe/Kiev');
 
 /**
  * Autoloader PSR4

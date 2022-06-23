@@ -9,3 +9,7 @@ footer {
     background: black;
     color: #fff;
 }
+
+.header__nav ul li a {
+    color: #fff;
+}

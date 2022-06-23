@@ -5,7 +5,10 @@ namespace Who\Controller\admin;
 use Who\Controller\BaseController;
 use Who\Controller\traits\ContextController;
 
-class IndexController extends BaseController {
+/**
+ * Class provides logout from admin panel functionality.
+ */
+class LogoutController extends BaseController {
 
   use ContextController;
 
@@ -17,13 +20,14 @@ class IndexController extends BaseController {
     if (!isset($_SESSION['auth']) || $_SESSION['auth'] !== true) {
       header('Location: /admin/auth');
       die();
+    } else {
+      // Remove session cookie and redirect to auth page.
+      unset($_SESSION['auth']);
+      header('Location: /admin/auth');
+      die();
     }
-    $time = $date = date('m/d/Y h:i:s a', time());
-    $this->baseView->buildPage($this->routeController->get('routeType'), [
-      'header' => '',
-      'index' => ['time' => $time],
-      'footer' => ''
-    ]);
+
   }
 
 }
+
