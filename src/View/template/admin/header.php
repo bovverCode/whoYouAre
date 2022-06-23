@@ -16,7 +16,29 @@
 <div class="wrapper">
     <header class="header">
         <div class="container">
-            HEADER
+           <div class="header__row">
+               <div class="header__col">
+                   <div class="header__title">
+                       Hello, admin!
+                   </div>
+               </div>
+               <div class="header__col">
+                   <nav class="header__nav">
+                       <ul>
+                           <li>
+                               <a href="/admin/request">
+                                   Requests
+                               </a>
+                           </li>
+                           <li>
+                               <a href="/admin/logout">
+                                   Log out
+                               </a>
+                           </li>
+                       </ul>
+                   </nav>
+               </div>
+           </div>
         </div>
     </header>
     <main>
