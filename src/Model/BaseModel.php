@@ -76,15 +76,7 @@ class BaseModel {
     } else $fields = '*';
 
     # Getting where conditions.
-    $where = '';
-    if ($options['where'] && is_array($options['where'])) {
-      $where = 'WHERE';
-      foreach ($options['where'] as $field => $value) {
-        $where .= " $table.$field{$value[0]}? AND";
-        $prepareValues[] = $value[1];
-      }
-      $where = rtrim($where, 'AND');
-    }
+    $where = $this->where($table, $options, $prepareValues);
 
     # Getting sort stuff.
     $sort = '';
@@ -162,15 +154,7 @@ class BaseModel {
     }
 
     # Getting where conditions.
-    $where = '';
-    if ($options['where'] && is_array($options['where'])) {
-      $where = 'WHERE';
-      foreach ($options['where'] as $field => $value) {
-        $where .= " $table.$field{$value[0]}? AND";
-        $prepareValues[] = $value[1];
-      }
-      $where = rtrim($where, 'AND');
-    }
+    $where = $this->where($table, $options, $prepareValues);
 
     $query .= " $set $where";
     return $this->query($query, $prepareValues);
@@ -188,18 +172,36 @@ class BaseModel {
     $prepareValues = [];
 
     # Getting where conditions.
-    $where = '';
-    if ($options['where'] && is_array($options['where'])) {
-      $where = 'WHERE';
-      foreach ($options['where'] as $field => $value) {
-        $where .= " $table.$field{$value[0]}? AND";
-        $prepareValues[] = $value[1];
-      }
-      $where = rtrim($where, 'AND');
-    }
+    $where = $this->where($table, $options, $prepareValues);
 
     $query .= " $where";
     return $this->query($query, $prepareValues);
+  }
+
+  /**
+   * Function build where conditions for query.
+   *
+   * @var $table
+   *  String name of table.
+   * @var $options
+   *  Array of query options.
+   * @var $prepareValues
+   *  Link for the query values array.
+   */
+  protected function where($table, $options, &$prepareValues) {
+    $whereQuery = '';
+    $where = $options['where'];
+
+    if (is_array($where) && !empty($where)) {
+      $whereQuery = 'WHERE';
+      foreach ($where as $field => $value) {
+        $whereQuery .= " $table.$field{$value[0]}? AND";
+        $prepareValues[] = $value[1];
+      }
+      $whereQuery = rtrim($whereQuery, 'AND');
+    }
+
+    return $whereQuery;
   }
 
 }
