@@ -26,8 +26,8 @@
                    <nav class="header__nav">
                        <ul>
                            <li>
-                               <a href="/admin/request">
-                                   Requests
+                               <a href="/admin/log">
+                                   Site logs
                                </a>
                            </li>
                            <li>

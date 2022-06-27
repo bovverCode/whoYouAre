@@ -4,6 +4,7 @@ namespace Who\Controller\traits;
 
 use Who\Controller\RouteController;
 use Who\Model\BaseModel;
+use Who\Service\ServiceHandler;
 use Who\View\BaseView;
 
 /**
@@ -28,10 +29,16 @@ trait ContextController {
    */
   protected $baseModel;
 
+  /**
+   * @var ServiceHandler
+   */
+  protected $serviceHandler;
+
   public function __construct() {
     $this->routeController = RouteController::getInstance();
     $this->baseView = BaseView::getInstance();
     $this->baseModel = BaseModel::getInstance();
+    $this->serviceHandler = ServiceHandler::getInstance();
     $this->build();
     exit();
   }

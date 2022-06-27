@@ -25,3 +25,8 @@ const ADMIN_JS = 'public/js/admin.js';
 const USER_CSS = 'public/css/user.css';
 const USER_JS = 'public/js/user.js';
 
+# Service vars
+
+const SERVICE_PATH = 'Who\\Service\\';
+const SERVICE_SETTINGS = 'src/Service/service.settings.yml';
+
