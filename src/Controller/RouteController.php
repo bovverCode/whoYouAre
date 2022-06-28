@@ -3,6 +3,8 @@
 namespace Who\Controller;
 
 use Who\Controller\traits\Singleton;
+use Who\Service\Logger\Base;
+use Who\Service\ServiceHandler;
 
 class RouteController extends BaseController {
 
@@ -17,10 +19,21 @@ class RouteController extends BaseController {
   protected $options = [];
 
   /**
+   * @var ServiceHandler
+   */
+  protected $serviceHandler;
+
+  /**
+   * @var Base
+   */
+  protected $logger;
+
+  /**
    * Method to set up needle variables in the BaseController Class.
    */
   public function route() {
-
+    $this->serviceHandler = ServiceHandler::getInstance();
+    $this->logger = $this->serviceHandler->getService('logger');
     // Actual path.
     $path = $_SERVER['REQUEST_URI'];
     $path = substr($path, strlen(SITE_PATH));
@@ -86,7 +99,8 @@ class RouteController extends BaseController {
     if (class_exists($class)) {
         $controllerInstance = new $class;
     } else {
-        throw new \Exception('Class: ' . $class . ' not exist.');
+        $this->logger->log(1, 'Class: ' . $class . ' not exist.');
+        throw new \Exception('Something goes wrong. Contact <a href="https://telegram.me/right_property">admin</a> or jump to <a href="/">homepage</a>');
     }
 
   }

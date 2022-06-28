@@ -55,7 +55,8 @@ class BaseModel {
    * [
    *  'fields' => ['id', 'name'],
    *  'where' => ['age' => ['>', 18]],
-   *  'sort' => ['name' => 'ASC']
+   *  'sort' => ['name' => 'ASC'],
+   *  'limit' = [10(start), 100 end] or [10(count of rows)]
    * ]
    */
   public function read($table, $options = []) {
@@ -64,7 +65,7 @@ class BaseModel {
 
     # Getting fields for our query.
     $fields = '';
-    if ($options['fields']) {
+    if (isset($options['fields'])) {
       if (is_array($options['fields'])) {
         foreach ($options['fields'] as $field) {
           $fields .= $table . '.' . $field . ',';
@@ -88,7 +89,17 @@ class BaseModel {
       $sort = rtrim($sort, ',');
     }
 
-    $query .= " $fields FROM $table $where $sort";
+    # Getting limits.
+    $limit = '';
+    if (isset($options['limit']) && is_array($options['limit'])) {
+      $limit = 'LIMIT ';
+      foreach ($options['limit'] as $value) {
+        $limit .= "$value,";
+      }
+      $limit = rtrim($limit, ',');
+    }
+
+    $query .= " $fields FROM $table $where $sort $limit";
     return $this->query($query, $prepareValues);
   }
 
@@ -190,7 +201,7 @@ class BaseModel {
    */
   protected function where($table, $options, &$prepareValues) {
     $whereQuery = '';
-    $where = $options['where'];
+    $where = $options['where'] ?? [];
 
     if (is_array($where) && !empty($where)) {
       $whereQuery = 'WHERE';

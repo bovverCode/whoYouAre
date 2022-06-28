@@ -34,11 +34,19 @@ trait ContextController {
    */
   protected $serviceHandler;
 
+  /**
+   * Method to setup needle dependencies.
+   *
+   * @return void
+   */
+  public function create() {}
+
   public function __construct() {
     $this->routeController = RouteController::getInstance();
     $this->baseView = BaseView::getInstance();
     $this->baseModel = BaseModel::getInstance();
     $this->serviceHandler = ServiceHandler::getInstance();
+    $this->create();
     $this->build();
     exit();
   }
