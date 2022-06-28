@@ -9,10 +9,14 @@ class IndexController extends BaseController {
 
   use ContextController;
 
-  public function __construct() {
-
-    echo 'user index';
-
+  /**
+   * {@inheritdoc}
+   */
+  protected function build() {
+    $this->baseView->buildPage($this->routeController->get('routeType'), [
+    'header' => '',
+    'footer' => ''
+    ]);
   }
 
 }

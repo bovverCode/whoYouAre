@@ -50,5 +50,11 @@ class BaseView {
     return '<script src="' . SITE_PATH . $src . '"></script>';
   }
 
+  /**
+   * Get favicon.
+   */
+  public function getFavIcon() {
+    return '<link rel="icon" type="image/x-icon" href="' . SITE_PATH . FAVICON . '">';
+  }
 
 }
