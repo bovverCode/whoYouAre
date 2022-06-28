@@ -26,6 +26,11 @@
                    <nav class="header__nav">
                        <ul>
                            <li>
+                               <a href="/admin">
+                                   Main
+                               </a>
+                           </li>
+                           <li>
                                <a href="/admin/log">
                                    Site logs
                                </a>
