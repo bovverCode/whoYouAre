@@ -30,3 +30,8 @@ const USER_JS = 'public/js/user.js';
 const SERVICE_PATH = 'Who\\Service\\';
 const SERVICE_SETTINGS = 'src/Service/service.settings.yml';
 
+
+# Other
+
+const FAVICON = 'public/icon.png';
+
