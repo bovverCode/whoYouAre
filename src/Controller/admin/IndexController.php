@@ -18,7 +18,6 @@ class IndexController extends BaseController {
       header('Location: /admin/auth');
       die();
     }
-//    $this->baseModel->read('fuck');
     $time = date('m/d/Y h:i:s a', time());
     $this->baseView->buildPage($this->routeController->get('routeType'), [
       'header' => '',
