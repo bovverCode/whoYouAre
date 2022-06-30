@@ -14,8 +14,9 @@ class IndexController extends BaseController {
    */
   protected function build() {
     $this->baseView->buildPage($this->routeController->get('routeType'), [
-    'header' => '',
-    'footer' => ''
+      'header' => '',
+      'front' => '',
+      'footer' => ''
     ]);
   }
 
