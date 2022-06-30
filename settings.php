@@ -34,4 +34,5 @@ const SERVICE_SETTINGS = 'src/Service/service.settings.yml';
 # Other
 
 const FAVICON = 'public/icon.png';
+const ADMIN_HREF = 'https://telegram.me/right_property';
 

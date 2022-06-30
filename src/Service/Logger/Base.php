@@ -27,17 +27,6 @@ class Base {
   protected $fields = ['type', 'text', 'time'];
 
   /**
-   * Log types.
-   *
-   * @var string[]
-   */
-  protected $types = [
-    0 => 'Default',
-    1 => 'Route',
-    2 => 'Data base',
-  ];
-
-  /**
    * Log count on page.
    *
    * @var int
@@ -66,14 +55,7 @@ class Base {
    *  Log text
    */
   public function log($type, $text) {
-    # Set default if type not exist.
-    if (!array_key_exists($type, $this->types)){
-      $type = 0;
-    }
-
     # Insert log to db.
-    $type = $this->types[$type];
-    $text = trim($text);
     $time = date('m/d/Y h:i:s a', time());
     return $this->baseModel->create($this->table, $this->fields, [$type, $text, $time]);
   }

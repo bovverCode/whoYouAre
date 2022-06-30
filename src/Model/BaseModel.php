@@ -8,6 +8,8 @@ namespace Who\Model;
 use PDO;
 use PDOException;
 use Who\Controller\traits\Singleton;
+use Who\Exception\DatabaseException;
+use Who\Service\ServiceHandler;
 
 class BaseModel {
 
@@ -29,7 +31,7 @@ class BaseModel {
       try {
         self::$instance->db = new PDO('mysql:host=' . HOST_NAME . ';dbname=' . DB_NAME, DB_USER, DB_PASS);
       } catch (PDOException $e) {
-        exit("DB Error: " . $e->getMessage());
+        exit('Fatal error. Contact <a href="' . ADMIN_HREF . '">admin</a>');
       }
       return self::$instance;
     }
@@ -40,13 +42,16 @@ class BaseModel {
    * Execute some query
    */
   public function query($query, $values = []) {
-    try {
       $stmt = $this->db->prepare($query);
-      $stmt->execute($values);
-      return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-      exit("DB Error: " . $e->getMessage());
-    }
+      try {
+        if ($stmt->execute($values)) {
+          return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        throw new DatabaseException('Fail on execute query: ' . $query . ' with values: ' . implode(', ', $values), 0);
+      } catch (DatabaseException $de) {
+        ServiceHandler::getInstance()->getService('logger')->log($de->getCodeString(), $de->getMessage());
+        exit($de->getUserMessage());
+      }
   }
 
   /**

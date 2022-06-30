@@ -3,6 +3,7 @@
 namespace Who\Controller;
 
 use Who\Controller\traits\Singleton;
+use Who\Exception\RouteException;
 use Who\Service\Logger\Base;
 use Who\Service\ServiceHandler;
 
@@ -99,8 +100,7 @@ class RouteController extends BaseController {
     if (class_exists($class)) {
         $controllerInstance = new $class;
     } else {
-        $this->logger->log(1, 'Class: ' . $class . ' not exist.');
-        throw new \Exception('Something goes wrong. Contact <a href="https://telegram.me/right_property">admin</a> or jump to <a href="/">homepage</a>');
+        throw new RouteException('Class: ' . $class . ' not exist.', 0);
     }
 
   }
