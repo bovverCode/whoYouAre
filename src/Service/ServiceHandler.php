@@ -5,6 +5,7 @@ namespace Who\Service;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use Who\Controller\traits\Singleton;
+use Who\Exception\RouteException;
 
 /**
  * Class provides methods and values to handle services.
@@ -67,7 +68,7 @@ class ServiceHandler {
           // Create instance if not exist.
           return $this->services[$name] = $className::getInstance();
         } else {
-          throw new \Exception('Class: ' . $className . ' not exist.');
+          exit('Fatal error. Contact <a href="' . ADMIN_HREF . '">admin</a>');
         }
       } else {
         # Return class instance if already exist.
