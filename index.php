@@ -6,7 +6,6 @@
 use Who\Controller\RouteController;
 use Who\Exception\RouteException;
 use Who\Service\ServiceHandler;
-use Who\Exception\DatabaseException;
 
 session_start();
 require_once "settings.php";
