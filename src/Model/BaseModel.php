@@ -41,11 +41,11 @@ class BaseModel {
   /**
    * Execute some query
    */
-  public function query($query, $values = []) {
+  public function query($query, $values = [], $fetch_mode = PDO::FETCH_ASSOC) {
       $stmt = $this->db->prepare($query);
       try {
         if ($stmt->execute($values)) {
-          return $stmt->fetchAll(PDO::FETCH_ASSOC);
+          return $stmt->fetchAll($fetch_mode);
         }
         throw new DatabaseException('Fail on execute query: ' . $query . ' with values: ' . implode(', ', $values), 0);
       } catch (DatabaseException $de) {
