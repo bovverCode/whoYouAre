@@ -1,5 +1,6 @@
 <section class="admin-section">
   <div class="container">
+    <!--LOGS TABLE-->
       <?php if ($logs = $values['logs']) : ?>
       <div class="logs-table">
           <table>
@@ -43,6 +44,10 @@
         <h2>
             No logs founded. <a href="/admin/log">Index log page</a>
         </h2>
+      <?php endif; ?>
+      <!--LOGS PAGINATION-->
+      <?php if ($count = $values['count'] > 10 ? $values['count'] : false) : ?>
+        <?= $this->getPagination($count); ?>
       <?php endif; ?>
   </div>
 </section>

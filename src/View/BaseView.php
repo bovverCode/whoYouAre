@@ -5,11 +5,26 @@
 
 namespace Who\View;
 
+use Who\Controller\RouteController;
 use Who\Controller\traits\Singleton;
 
 class BaseView {
 
   use Singleton;
+
+  /**
+   * @var RouteController
+   */
+  protected $routeController;
+
+  public static function getInstance() {
+    if (!isset(self::$instance)) {
+      self::$instance = new static();
+      self::$instance->routeController = RouteController::getInstance();
+      return self::$instance;
+    }
+    return self::$instance;
+  }
 
   /**
    * Method to build page using template.
@@ -55,6 +70,28 @@ class BaseView {
    */
   public function getFavIcon() {
     return '<link rel="icon" type="image/x-icon" href="' . SITE_PATH . FAVICON . '">';
+  }
+
+  /**
+   * Get pagination.
+   *
+   * @param $total int
+   * @param $perPage int
+   * @return string
+   */
+  public function getPagination($total, $perPage = 10) {
+    # Prepare path for pagination items.
+    $routeType = $this->routeController->get('routeType');
+    $routeType = $routeType === 'user' ? '' : 'admin/';
+    $controller = $this->routeController->get('controller');
+    $path = SITE_PATH . $routeType . $controller;
+    $pagination = '<div class="pagination">';
+    $pages = ceil($total / $perPage);
+    for ($i = 1; $i <= $pages; $i++) {
+      $pagination .= "<a href='$path/page/$i' class='pagination-item'> $i </a>";
+    }
+    $pagination .= '</div>';
+    return $pagination;
   }
 
 }

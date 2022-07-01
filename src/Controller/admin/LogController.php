@@ -26,11 +26,19 @@ class LogController extends BaseController {
    * {@inheritdoc}
    */
   protected function build() {
-    $page = $this->routeController->get('options')['page'] ?? 1;
+    # Prepare values for view.
+    $page = 1;
+    if (isset($this->routeController->get('options')['page'])) {
+      $page = is_numeric($this->routeController->get('options')['page']) ?
+      $this->routeController->get('options')['page'] : 1;
+    }
+    # Log items.
     $logs = $this->logger->getLogs($page);
+    # Logs total count.
+    $count = $this->logger->getTotalCount();
     $this->baseView->buildPage($this->routeController->get('routeType'), [
     'header' => '',
-    'logs' => ['logs' => $logs],
+    'logs' => ['logs' => $logs, 'count' => $count],
     'footer' => ''
     ]);
   }

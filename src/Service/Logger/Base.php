@@ -2,6 +2,7 @@
 
 namespace Who\Service\Logger;
 
+use PDO;
 use Who\Controller\traits\Singleton;
 use Who\Model\BaseModel;
 
@@ -69,18 +70,23 @@ class Base {
    */
   public function getLogs($page = 1) {
     # Logs limit.
-    if ($page < 1) $page = 1;
-    $start = 1;
-    $end = 10;
-    if ($page > 1) {
-      $start = $this->logsOnPage + ($page - 1);
-      $end = $this->logsOnPage * $page + ($page - 1);
-    }
+    $start = $page <= 1 ? 0 : ($page - 1) * 10;
+    $quantity = 10;
 
     return $this->baseModel->read($this->table, [
     'sort' => ['id' => 'DESC'],
-    'limit' => [$start, $end],
+    'limit' => [$start, $quantity],
     ]);
+  }
+
+  /**
+   * Get total logs quantity.
+   *
+   * @return mixed
+   */
+  public function getTotalCount() {
+    $count = $this->baseModel->query("SELECT COUNT(*) FROM {$this->table}", [], PDO::FETCH_NUM);
+    return $count[0][0];
   }
 
 }
