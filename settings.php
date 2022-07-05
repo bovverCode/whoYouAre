@@ -30,9 +30,13 @@ const USER_JS = 'public/js/user.js';
 const SERVICE_PATH = 'Who\\Service\\';
 const SERVICE_SETTINGS = 'src/Service/service.settings.yml';
 
+# Log files
+const LOG_FILE = './logs/site_logs.txt';
+const FATAL_LOG_FILE = './logs/fatal_logs.txt';
 
 # Other
 
 const FAVICON = 'public/icon.png';
 const ADMIN_HREF = 'https://telegram.me/right_property';
+
 
