@@ -1,2 +1,4 @@
 /vendor
 /.idea
+/logs/site_logs.txt
+/logs/fatal_logs.txt
