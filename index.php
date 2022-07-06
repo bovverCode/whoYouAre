@@ -23,5 +23,6 @@ try {
   $routeController->route();
 } catch (RouteException $re) {
   ServiceHandler::getInstance()->getService('logger')->log($re->getCodeString(), $re->getMessage());
-  exit($re->getUserMessage());
+  header('Location: ' . SITE_PATH . 'oops');
+  die();
 }
