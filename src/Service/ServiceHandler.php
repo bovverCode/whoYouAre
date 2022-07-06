@@ -5,7 +5,6 @@ namespace Who\Service;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use Who\Controller\traits\Singleton;
-use Who\Exception\RouteException;
 
 /**
  * Class provides methods and values to handle services.

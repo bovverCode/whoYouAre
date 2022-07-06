@@ -43,7 +43,7 @@ class RouteController extends BaseController {
     if (substr($path, strlen($path) - 1, 1) === '/') {
       $path = substr($path, 0, strlen($path) -1);
       // Redirect to path without '/' at the end.
-      header('Location: /' . $path);
+      header('Location: ' . SITE_PATH . $path);
       die();
     }
 
