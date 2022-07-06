@@ -95,6 +95,14 @@ class RouteController extends BaseController {
     }
 
     $this->controller = strtolower($this->controller);
+    # Url with hyphen
+    $words = explode('-', $this->controller);
+    if (count($words) > 1) {
+      $this->controller = '';
+      foreach ($words as $word) {
+        $this->controller .= ucfirst($word);
+      }
+    }
     $class = "Who\\Controller\\" . $this->routeType . "\\" . ucfirst($this->controller) . 'Controller';
 
     if (class_exists($class)) {
