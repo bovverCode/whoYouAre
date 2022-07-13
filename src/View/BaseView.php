@@ -7,6 +7,7 @@ namespace Who\View;
 
 use Who\Controller\RouteController;
 use Who\Controller\traits\Singleton;
+use Who\Exception\RouteException;
 
 class BaseView {
 
@@ -46,7 +47,7 @@ class BaseView {
       if (file_exists("$path/$template.php")) {
         include "$path/$template.php";
       } else {
-        throw new \Exception("File: $path/$template.php not exist.");
+        throw new RouteException("File: $path/$template.php not exist.", 0);
       }
     }
   }

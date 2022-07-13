@@ -37,6 +37,11 @@
                                </a>
                            </li>
                            <li>
+                               <a href="/admin/fields">
+                                   Fields
+                               </a>
+                           </li>
+                           <li>
                                <a href="/admin/logout">
                                    Log out
                                </a>

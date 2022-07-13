@@ -76,7 +76,7 @@ class RouteController extends BaseController {
         array_shift($path);
 
       } else {
-        //index controller
+        // index controller
         $this->controller = 'index';
       }
 
@@ -95,7 +95,7 @@ class RouteController extends BaseController {
     }
 
     $this->controller = strtolower($this->controller);
-    # Url with hyphen
+    # Url with hyphen.
     $words = explode('-', $this->controller);
     if (count($words) > 1) {
       $this->controller = '';
