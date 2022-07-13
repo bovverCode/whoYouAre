@@ -1,2 +1,3 @@
 services:
   logger: "Logger\\Base"
+  fields: "Fields\\Base"

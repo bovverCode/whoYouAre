@@ -16,3 +16,18 @@ function error_handler($errno, $errstr, $errfile, $errline) {
   fclose($file);
   exit('Something goes wrong. Contact <a href="' . ADMIN_HREF . '">admin</a> or jump to <a href="/">homepage</a>');
 }
+
+/**
+ *  Check if slug use only eng chars and '_' symbol.
+ *
+ * @param $slug
+ *  Slug to check.
+ *
+ * @return bool
+ */
+function isValidSlug($slug) {
+  # Check if string contains only english characters and '_';
+  $pattern = '/[a-zA-Z]|_*/';
+  $wrongCharacters = preg_replace($pattern, '', $slug);
+  return strlen($wrongCharacters) === 0;
+}
