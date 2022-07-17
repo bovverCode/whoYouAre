@@ -5,7 +5,7 @@
  * Implementation of field group functionality.
  */
 
-namespace Who\Service\Fields;
+namespace Who\Service\Fields\Model;
 
 use Who\Controller\traits\Singleton;
 use Who\Model\BaseModel;
@@ -13,7 +13,7 @@ use Who\Model\BaseModel;
 /**
  * Field group functionality class.
  */
-class FieldGroup {
+class Group {
 
   use Singleton;
 
@@ -45,12 +45,12 @@ class FieldGroup {
   }
 
   /**
-   * Get field groups
+   * Get field groups.
    *
    * @return array
    *  Assoc array with id and name keys.
    */
-  public function getGroups() {
+  public function getGroups() : array {
     return $this->baseModel->read($this->table);
   }
 
@@ -62,7 +62,7 @@ class FieldGroup {
    *
    * @return array
    */
-  public function getGroup(string $name) {
+  public function getGroupByName(string $name) : array {
     return $this->baseModel->read($this->table, [
       'where' => ['name' => ['=', $name]],
     ]);
@@ -76,7 +76,7 @@ class FieldGroup {
    *
    * @return array
    */
-  public function getGroupById(int $id) {
+  public function getGroupById(int $id) : array {
     return $this->baseModel->read($this->table, [
       'where' => ['id' => ['=', $id]],
     ]);
