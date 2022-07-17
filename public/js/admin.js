@@ -38,6 +38,7 @@ docReady(function () {
     return select;
   };
 
+  // Create textarea element
   const createTextarea = (name, cols, placeholder) => {
     const textarea = document.createElement('textarea');
     textarea.name = name;
@@ -46,6 +47,7 @@ docReady(function () {
     return textarea;
   };
 
+  // Create button element
   const createButton = (button_class, button_text) => {
     const wrap = document.createElement('div');
     wrap.classList.add('admin-button');
@@ -56,7 +58,18 @@ docReady(function () {
     return wrap;
   };
 
-  // Create group form
+  // Create link
+  const createLink = (text, href) => {
+    const wrap = document.createElement('div');
+    wrap.classList.add('admin-button');
+    const link = document.createElement('a');
+    link.href = href;
+    link.innerText = text;
+    wrap.append(link);
+    return wrap;
+  };
+
+  // Create group form.
   const addGroupForm = document.getElementById('add-group');
   if (addGroupForm) {
     const listParent = addGroupForm.querySelector('.error-list');
@@ -78,10 +91,10 @@ docReady(function () {
       text.innerText = name;
       td.append(text)
       const td2 = document.createElement('td');
-      const link = document.createElement('a');
-      link.innerText = 'Edit';
-      link.href = '/admin/fields/group/' + id;
-      td2.append(link);
+      const link = createLink('Settings', '/admin/fields/group/' + id + '/edit');
+      const link2 = createLink('Edit', '/admin/fields/group/' + id);
+      td2.append(link, link2);
+
       tr.append(td, td2);
       groupTableBody.append(tr);
     }
@@ -103,9 +116,20 @@ docReady(function () {
   // Group fields app
   const fieldsApp = document.getElementById('group-app');
   if (fieldsApp) {
+    const groupId = fieldsApp.dataset.id;
     const addFieldButton = fieldsApp.querySelector('#add-field');
     const types = fieldsApp.dataset.types.split(',');
     const fieldsBody = fieldsApp.querySelector('.group-app__table tbody');
+    const groupSlugInput = fieldsApp.querySelector('.group-app__title > input');
+
+    const fields = fieldsApp.querySelectorAll('.field-row--exist');
+    fields.forEach(field => {
+      // textarea
+      const textarea = field.querySelector(':scope > .field_value > textarea');
+      if (textarea) {
+        textarea.addEventListener('input', (e) => textInputHandler(e));
+      }
+    });
 
     function createField() {
       const tr = document.createElement('tr');
@@ -122,19 +146,44 @@ docReady(function () {
       const typeTd = document.createElement('td');
       typeTd.classList.add('field_type');
       const typeSelect = createSelect('field_type', types);
+      typeSelect.addEventListener('change', (e) => selectChangeHandler(e))
       typeTd.append(typeSelect);
-
-      const valueTd = document.createElement('td');
-      valueTd.classList.add('field_value');
-      const valueTextArea = createTextarea('field_value', 6, 'Text content');
-      valueTd.append(valueTextArea);
 
       const actionTd = document.createElement('td');
       const button = createButton('delete-field', 'Delete');
       actionTd.append(button);
 
-      tr.append(slugTd, typeTd, valueTd, actionTd);
+      tr.append(slugTd, typeTd, actionTd);
       fieldsBody.append(tr);
+    }
+
+    function selectChangeHandler(e) {
+      console.log(e);
+    }
+
+    function textInputHandler(e) {
+      const fieldEl = e.target.closest('.field-row');
+      fieldEl.classList.add('field-row--edited');
+    }
+
+    function getFieldData(group_name, fields) {
+      let formData = new FormData();
+      let group = {
+        slug: group_name,
+        id: groupId,
+      };
+      let form_fields = {
+        create: [],
+        update: [],
+      };
+      fields.forEach(field => {
+        const slug = field.querySelector(':scope > .field_slug > input').value;
+        const type = field.querySelector(':scope > .field_type select').value;
+        if (type === 'text') {
+
+        }
+      });
+      return formData;
     }
 
     addFieldButton.addEventListener('click', function (e) {
@@ -144,7 +193,12 @@ docReady(function () {
 
     fieldsApp.addEventListener('submit', function (e) {
       e.preventDefault();
+      const editedFields = document.querySelectorAll('.field-row--edited');
+      const formData = getFieldData(editedFields);
     });
+
+    document.querySelector('select').addEventListener('change', (e) => selectChangeHandler(e));
+
   }
 });
 
