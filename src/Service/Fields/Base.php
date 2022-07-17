@@ -2,7 +2,7 @@
 
 /**
  * Base functionality for fields service.
- * Service provides functionality to crud fields and field groups.
+ * Service provides functionality to create fields of different types and group it.
  */
 
 namespace Who\Service\Fields;
